@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>بِسْمِ اللَّهِ - For Kader</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Great+Vibes&family=Cinzel:wght@400;500;600&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --midnight: #050510;
+            --emerald: #1a5a4a;
+            --emerald-dark: #0d3a2a;
+            --emerald-light: #2d7a6a;
+            --gold: #d4a574;
+            --gold-light: #e8c89e;
+            --cream: #f5ebe0;
+            --cream-dark: #e8ddd0;
+            --silver: #b8c0c8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background: var(--midnight);
+            min-height: 100vh;
+            color: var(--cream);
+        }
+
+        /* ===== STARFIELD ===== */
+        .starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: radial-gradient(ellipse at center, #081818 0%, var(--midnight) 100%);
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle var(--duration) ease-in-out infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: var(--min-opacity); }
+            50% { opacity: 1; }
+        }
+
+        .crescent {
+            position: fixed;
+            top: 5%;
+            right: 8%;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            box-shadow: 7px 0 0 0 var(--gold);
+            opacity: 0.5;
+            z-index: 1;
+        }
+
+        /* ===== PARTICLES ===== */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: var(--gold);
+            border-radius: 50%;
+            opacity: 0;
+            animation: float-up 10s ease-in-out infinite;
+            box-shadow: 0 0 6px var(--gold);
+        }
+
+        @keyframes float-up {
+            0% { opacity: 0; transform: translateY(100vh); }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { opacity: 0; transform: translateY(-50px); }
+        }
+
+        /* ===== STAGES ===== */
+        .stage {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            z-index: 10;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1s ease;
+            padding: 20px;
+        }
+
+        .stage.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* ===== GIFT BOX ===== */
+        .gift-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .gift-box {
+            position: relative;
+            width: 180px;
+            height: 140px;
+        }
+
+        .gift-body {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 110px;
+            background: linear-gradient(135deg, var(--emerald-dark) 0%, var(--emerald) 50%, var(--emerald-dark) 100%);
+            border: 2px solid var(--gold);
+            border-radius: 8px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+        }
+
+        .gift-lid {
+            position: absolute;
+            top: 20px;
+            left: -6px;
+            width: calc(100% + 12px);
+            height: 35px;
+            background: linear-gradient(135deg, var(--emerald) 0%, var(--emerald-light) 50%, var(--emerald) 100%);
+            border: 2px solid var(--gold);
+            border-radius: 6px;
+            transform-origin: top center;
+            transition: transform 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 5;
+        }
+
+        .gift-box.opened .gift-lid {
+            transform: rotateX(-110deg) translateY(-15px);
+        }
+
+        .ribbon-v {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 25px;
+            height: 100%;
+            background: linear-gradient(90deg, #9a7030, var(--gold), #9a7030);
+            z-index: 3;
+        }
+
+        .ribbon-h {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            height: 25px;
+            background: linear-gradient(180deg, #9a7030, var(--gold), #9a7030);
+            z-index: 3;
+        }
+
+        .bow {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            font-size: 35px;
+        }
+
+        .gift-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 220px;
+            height: 220px;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, rgba(212,165,116,0.4) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.8s ease;
+            pointer-events: none;
+        }
+
+        .gift-box.opened .gift-glow {
+            opacity: 1;
+        }
+
+        .gift-text {
+            margin-top: 30px;
+            font-family: 'Amiri', serif;
+            font-size: 20px;
+            color: var(--gold);
+            opacity: 0;
+            animation: fadeIn 1.5s ease forwards 0.5s;
+        }
+
+        .gift-subtext {
+            margin-top: 8px;
+            font-family: 'Cinzel', serif;
+            font-size: 10px;
+            letter-spacing: 3px;
+            color: var(--silver);
+            text-transform: uppercase;
+            opacity: 0;
+            animation: fadeIn 1.5s ease forwards 1s;
+        }
+
+        .gift-ramadan {
+            margin-top: 12px;
+            font-family: 'Amiri', serif;
+            font-size: 16px;
+            color: var(--gold-light);
+            opacity: 0;
+            animation: fadeIn 1.5s ease forwards 1.5s;
+        }
+
+        @keyframes fadeIn { to { opacity: 1; } }
+
+        /* ===== ENVELOPE ===== */
+        .envelope-container {
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .envelope {
+            position: relative;
+            width: 240px;
+            height: 150px;
+            margin: 0 auto;
+        }
+
+        .envelope-body {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--emerald) 0%, var(--emerald-dark) 100%);
+            border: 2px solid var(--gold);
+            border-radius: 5px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 75px;
+            background: linear-gradient(180deg, var(--emerald-light) 0%, var(--emerald) 100%);
+            border: 2px solid var(--gold);
+            border-bottom: none;
+            clip-path: polygon(0 0, 50% 100%, 100% 0);
+            transform-origin: top center;
+            transition: transform 0.8s ease;
+            z-index: 2;
+        }
+
+        .envelope.open .envelope-flap {
+            transform: rotateX(180deg);
+        }
+
+        .seal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle at 30% 30%, var(--gold-light), var(--gold));
+            border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Amiri', serif;
+            font-size: 20px;
+            color: var(--emerald-dark);
+        }
+
+        .envelope-text {
+            margin-top: 25px;
+            font-family: 'Cinzel', serif;
+            font-size: 9px;
+            letter-spacing: 3px;
+            color: var(--silver);
+            text-transform: uppercase;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards 0.5s;
+        }
+
+        /* ===== BOOK COVER ===== */
+        .book-closed {
+            position: relative;
+            width: 270px;
+            height: 380px;
+            background: linear-gradient(135deg, var(--emerald-dark) 0%, var(--emerald) 50%, var(--emerald-dark) 100%);
+            border: 3px solid var(--gold);
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 25px;
+            cursor: pointer;
+        }
+
+        .book-closed.hidden {
+            display: none;
+        }
+
+        .book-crown {
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            font-size: 55px;
+            transform: rotate(-20deg);
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
+            z-index: 20;
+        }
+
+        .cover-bismillah {
+            font-family: 'Amiri', serif;
+            font-size: 18px;
+            color: var(--gold);
+            margin-bottom: 15px;
+        }
+
+        .cover-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .cover-ornament {
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 10px 0;
+        }
+
+        .cover-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 26px;
+            color: var(--gold);
+            text-align: center;
+        }
+
+        .cover-subtitle {
+            font-family: 'Cinzel', serif;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--silver);
+            text-transform: uppercase;
+            margin-top: 8px;
+        }
+
+        .cover-for {
+            font-family: 'Great Vibes', cursive;
+            font-size: 20px;
+            color: var(--gold-light);
+            margin-top: 25px;
+        }
+
+        .cover-tap {
+            position: absolute;
+            bottom: 20px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 12px;
+            color: var(--gold);
+            opacity: 0.5;
+            font-style: italic;
+        }
+
+        /* ===== BOOK PAGES ===== */
+        .book-pages {
+            width: 290px;
+            background: var(--cream);
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            display: none;
+            overflow: hidden;
+        }
+
+        .book-pages.visible {
+            display: block;
+        }
+
+        .page {
+            padding: 35px 25px 25px;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 320px;
+            background: linear-gradient(to bottom, var(--cream), var(--cream-dark));
+        }
+
+        .page.active {
+            display: flex;
+        }
+
+        .page-ornament {
+            width: 50px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--emerald), transparent);
+            margin: 12px 0;
+        }
+
+        .page-arabic {
+            font-family: 'Amiri', serif;
+            font-size: 16px;
+            color: var(--emerald-dark);
+            direction: rtl;
+            line-height: 1.7;
+            margin-bottom: 15px;
+            max-width: 250px;
+        }
+
+        .page-text {
+            font-size: 16px;
+            line-height: 1.7;
+            color: #1a1a1a;
+            max-width: 240px;
+        }
+
+        .page-text.large {
+            font-size: 32px;
+            font-family: 'Great Vibes', cursive;
+            color: var(--emerald);
+        }
+
+        .page-text.quote {
+            font-style: italic;
+            font-size: 15px;
+        }
+
+        .page-source {
+            font-size: 11px;
+            color: #8b6914;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        .page-footer {
+            padding: 15px 20px;
+            background: var(--emerald-dark);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .page-number {
+            font-family: 'Cinzel', serif;
+            font-size: 11px;
+            color: var(--gold);
+        }
+
+        .page-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            background: var(--gold);
+            border: none;
+            color: var(--emerald-dark);
+            padding: 12px 22px;
+            font-family: 'Cinzel', serif;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .nav-btn:active {
+            transform: scale(0.95);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        /* ===== FINAL STAGE ===== */
+        .stage-final {
+            background: radial-gradient(ellipse at center, #0d2a20 0%, var(--midnight) 100%);
+        }
+
+        .proposal-content {
+            text-align: center;
+            animation: revealProposal 1.5s ease forwards;
+            opacity: 0;
+            width: 100%;
+            max-width: 320px;
+        }
+
+        @keyframes revealProposal {
+            to { opacity: 1; }
+        }
+
+        .proposal-bismillah {
+            font-family: 'Amiri', serif;
+            font-size: 16px;
+            color: var(--gold);
+            margin-bottom: 15px;
+        }
+
+        .proposal-icon {
+            font-size: 35px;
+            margin-bottom: 10px;
+        }
+
+        .proposal-question {
+            font-family: 'Great Vibes', cursive;
+            font-size: 34px;
+            color: var(--gold);
+            margin-bottom: 8px;
+        }
+
+        .proposal-name {
+            font-family: 'Cinzel', serif;
+            font-size: 10px;
+            letter-spacing: 2px;
+            color: var(--silver);
+            margin-bottom: 25px;
+        }
+
+        .proposal-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .proposal-btn {
+            width: 100%;
+            max-width: 260px;
+            padding: 14px 20px;
+            font-family: 'Cinzel', serif;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border: 2px solid var(--gold);
+            background: transparent;
+            color: var(--gold);
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .proposal-btn:active {
+            background: var(--gold);
+            color: var(--midnight);
+        }
+
+        .proposal-btn.yes {
+            background: rgba(212,165,116,0.15);
+        }
+
+        .proposal-btn.think {
+            border-color: var(--silver);
+            color: var(--silver);
+        }
+
+        .proposal-btn.no {
+            border-color: rgba(255,255,255,0.25);
+            color: rgba(255,255,255,0.4);
+            font-size: 9px;
+        }
+
+        .proposal-note {
+            margin-top: 20px;
+            font-size: 11px;
+            color: var(--silver);
+            font-style: italic;
+            line-height: 1.5;
+        }
+
+        /* ===== MODALS ===== */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5,5,16,0.97);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1s ease;
+            padding: 25px;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            text-align: center;
+            max-width: 320px;
+        }
+
+        .modal-icon {
+            font-size: 45px;
+            margin-bottom: 15px;
+        }
+
+        .modal-arabic {
+            font-family: 'Amiri', serif;
+            font-size: 20px;
+            color: var(--gold);
+            margin-bottom: 12px;
+        }
+
+        .modal-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 32px;
+            color: var(--gold);
+            margin-bottom: 12px;
+        }
+
+        .modal-verse {
+            font-family: 'Amiri', serif;
+            font-size: 14px;
+            color: var(--gold-light);
+            direction: rtl;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .modal-text {
+            font-size: 14px;
+            color: var(--cream);
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+
+        .modal-signature {
+            font-family: 'Great Vibes', cursive;
+            font-size: 24px;
+            color: var(--gold);
+            margin-top: 15px;
+            margin-bottom: 20px;
+        }
+
+        .modal-back-btn {
+            margin-top: 20px;
+            padding: 12px 30px;
+            background: transparent;
+            border: 1px solid var(--silver);
+            color: var(--silver);
+            font-family: 'Cinzel', serif;
+            font-size: 9px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .modal-back-btn:active {
+            background: var(--silver);
+            color: var(--midnight);
+        }
+
+        /* Hearts */
+        .hearts-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1500;
+            opacity: 0;
+        }
+
+        .hearts-container.active { opacity: 1; }
+
+        .heart {
+            position: absolute;
+            animation: heartFloat 4s ease-out forwards;
+        }
+
+        @keyframes heartFloat {
+            0% { transform: translateY(100vh) scale(0); opacity: 1; }
+            100% { transform: translateY(-100vh) scale(1.3); opacity: 0; }
+        }
+
+        /* Loader */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--midnight);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            z-index: 9999;
+            transition: opacity 1s ease, visibility 1s ease;
+            padding: 20px;
+        }
+
+        .loader.hidden { opacity: 0; visibility: hidden; }
+
+        .loader-arabic {
+            font-family: 'Amiri', serif;
+            font-size: 18px;
+            color: var(--gold);
+            text-align: center;
+            line-height: 2;
+            margin-bottom: 25px;
+        }
+
+        .loader-spinner {
+            width: 40px;
+            height: 40px;
+            border: 2px solid transparent;
+            border-top-color: var(--gold);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <!-- Loader -->
+    <div class="loader" id="loader">
+        <div class="loader-arabic">
+            أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ<br>
+            بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+        </div>
+        <div class="loader-spinner"></div>
+    </div>
+
+    <!-- Background -->
+    <div class="starfield" id="starfield"></div>
+    <div class="crescent"></div>
+    <div class="particles" id="particles"></div>
+
+    <!-- Stage 1: Gift -->
+    <div class="stage stage-1 active" id="stage1">
+        <div class="gift-container" id="giftContainer">
+            <div class="gift-box" id="giftBox">
+                <div class="gift-glow"></div>
+                <div class="gift-body">
+                    <div class="ribbon-v"></div>
+                    <div class="ribbon-h"></div>
+                </div>
+                <div class="gift-lid">
+                    <div class="ribbon-v" style="height:100%"></div>
+                </div>
+                <div class="bow">🎀</div>
+            </div>
+            <div class="gift-text">بِسْمِ اللَّهِ</div>
+            <div class="gift-subtext">Tap to open</div>
+            <div class="gift-ramadan">رَمَضَان مُبَارَك</div>
+        </div>
+    </div>
+
+    <!-- Stage 2: Envelope -->
+    <div class="stage stage-2" id="stage2">
+        <div class="envelope-container" id="envelopeContainer">
+            <div class="envelope" id="envelope">
+                <div class="envelope-body"></div>
+                <div class="envelope-flap"></div>
+                <div class="seal">ف</div>
+            </div>
+            <div class="envelope-text">For Kader — My Destiny</div>
+        </div>
+    </div>
+
+    <!-- Stage 3: Book -->
+    <div class="stage stage-3" id="stage3">
+        <div class="book-closed" id="bookClosed">
+            <div class="book-crown">👑</div>
+            <div class="cover-bismillah">بِسْمِ اللَّهِ</div>
+            <div class="cover-icon">☪️</div>
+            <div class="cover-ornament"></div>
+            <div class="cover-title">A Letter of Niyyah</div>
+            <div class="cover-ornament"></div>
+            <div class="cover-subtitle">With sincere intentions</div>
+            <div class="cover-for">For My Queen, Kader</div>
+            <div class="cover-tap">tap to open</div>
+        </div>
+
+        <div class="book-pages" id="bookPages">
+            <div id="pagesContent"></div>
+            <div class="page-footer">
+                <div class="page-number" id="pageNumber">1 / 19</div>
+                <div class="page-nav">
+                    <button class="nav-btn" id="btnBack" disabled>Back</button>
+                    <button class="nav-btn" id="btnNext">Next</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stage 4: Proposal -->
+    <div class="stage stage-final" id="stageFinal">
+        <div class="proposal-content">
+            <div class="proposal-bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+            <div class="proposal-icon">👑</div>
+            <div class="proposal-question">Will You Marry Me?</div>
+            <div class="proposal-name">Kader — كادر — My Destiny</div>
+            <div class="proposal-buttons">
+                <button class="proposal-btn yes" id="btnYes">Yes, With Allah's Blessing 💕</button>
+                <button class="proposal-btn think" id="btnThink">I Need Time to Think</button>
+                <button class="proposal-btn no" id="btnNo">Let's Remain Friends</button>
+            </div>
+            <div class="proposal-note">
+                Whatever you decide, I respect it completely.<br>
+                May Allah guide us both to what is best.
+            </div>
+        </div>
+    </div>
+
+    <!-- Hearts -->
+    <div class="hearts-container" id="heartsContainer"></div>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <div class="modal-icon">👑💕</div>
+            <div class="modal-arabic">الحمد لله</div>
+            <div class="modal-title">Alhamdulillah</div>
+            <div class="modal-verse">وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً</div>
+            <div class="modal-text">
+                "He created for you mates from among yourselves, that you may find tranquility in them, and He placed between you love and mercy."
+                <br><small>— Quran 30:21</small>
+            </div>
+            <div class="modal-signature">Forever Yours, Faizan</div>
+            <button class="modal-back-btn" onclick="goBackToProposal('successModal')">← Go Back</button>
+        </div>
+    </div>
+
+    <!-- Think Modal -->
+    <div class="modal" id="thinkModal">
+        <div class="modal-content">
+            <div class="modal-icon">🤲</div>
+            <div class="modal-text">
+                Take all the time you need, my Queen.<br><br>
+                Please pray Istikhara and seek Allah's guidance. 
+                I will be waiting with patience and hope.<br><br>
+                When you are ready, I am here.
+            </div>
+            <div class="modal-arabic">اللَّهُمَّ خِرْ لِي وَاخْتَرْ لِي</div>
+            <div class="modal-signature">~ Faizan</div>
+            <button class="modal-back-btn" onclick="goBackToProposal('thinkModal')">← Go Back</button>
+        </div>
+    </div>
+
+    <!-- Friend Modal -->
+    <div class="modal" id="friendModal">
+        <div class="modal-content">
+            <div class="modal-icon">🙏</div>
+            <div class="modal-text">
+                JazakAllah Khair for being honest, Kader.<br><br>
+                I respect your decision completely. Our friendship is a blessing, 
+                and you will always have a friend in me.<br><br>
+                May Allah bless you with all happiness.
+            </div>
+            <div class="modal-signature">~ Your Friend, Faizan</div>
+            <button class="modal-back-btn" onclick="goBackToProposal('friendModal')">← Go Back</button>
+        </div>
+    </div>
+
+    <script>
+        // ========================================
+        // EMAILJS CONFIGURATION
+        // ========================================
+        const EMAILJS_PUBLIC_KEY = "-3eHyZqrFjPB8XuyP";
+        const EMAILJS_SERVICE_ID = "service_nuawc2p";
+        const EMAILJS_TEMPLATE_ID = "template_a8wvjq2";
+        // ========================================
+
+        // Tracking data
+        let userActions = [];
+        let sessionStart = new Date().toISOString();
+
+        function trackAction(action) {
+            const actionData = {
+                action: action,
+                timestamp: new Date().toISOString(),
+                localTime: new Date().toLocaleString('en-US', { timeZone: 'Asia/Karachi' })
+            };
+            userActions.push(actionData);
+            
+            // Store in localStorage for persistence
+            localStorage.setItem('proposal_actions', JSON.stringify(userActions));
+            
+            // Send email notification
+            sendEmailNotification(action);
+        }
+
+        async function sendEmailNotification(action) {
+            // Create summary of all actions
+            const actionsSummary = userActions.map((a, i) => 
+                `${i + 1}. ${a.action} - ${a.localTime}`
+            ).join('\n');
+
+            const message = `
+🔔 PROPOSAL RESPONSE ALERT!
+
+Latest Action: ${action}
+Time: ${new Date().toLocaleString('en-US', { timeZone: 'Asia/Karachi' })}
+
+📊 Session Summary:
+Session Started: ${new Date(sessionStart).toLocaleString('en-US', { timeZone: 'Asia/Karachi' })}
+Total Actions: ${userActions.length}
+
+📝 All Actions This Session:
+${actionsSummary}
+
+💕 From your proposal website for Kader
+            `;
+
+            // Using EmailJS
+            try {
+                const response = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        service_id: EMAILJS_SERVICE_ID,
+                        template_id: EMAILJS_TEMPLATE_ID,
+                        user_id: EMAILJS_PUBLIC_KEY,
+                        template_params: {
+                            subject: `💕 Proposal: ${action}`,
+                            message: message,
+                            action: action,
+                            time: new Date().toLocaleString('en-US', { timeZone: 'Asia/Karachi' })
+                        }
+                    })
+                });
+                
+                if (response.ok) {
+                    console.log('✅ Email sent successfully:', action);
+                } else {
+                    const error = await response.text();
+                    console.log('❌ Email failed:', error);
+                }
+            } catch (e) {
+                console.log('❌ Email error:', e);
+            }
+        }
+
+        function goBackToProposal(modalId) {
+            trackAction('Clicked BACK from ' + modalId.replace('Modal', '').toUpperCase());
+            document.getElementById(modalId).classList.remove('active');
+            document.getElementById('heartsContainer').classList.remove('active');
+        }
+
+        const bookPages = [
+            { arabic: "أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ\nبِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ", text: "I seek refuge in Allah from Satan.\nIn the name of Allah, the Most Gracious, the Most Merciful.", style: "quote" },
+            { arabic: "", text: "Kader...", style: "large" },
+            { arabic: "", text: "In Turkish, your name means 'Destiny.' And I believe — you are the destiny Allah has written for me.", style: "normal" },
+            { arabic: "وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا", text: "\"He created for you mates from among yourselves...\"", style: "quote", source: "— Quran 30:21" },
+            { arabic: "", text: "We have been friends for a long time. Before, I wasn't sure about my future or if I could dream this big.", style: "normal" },
+            { arabic: "", text: "But Allah opened doors I never expected.", style: "large" },
+            { arabic: "", text: "I spoke to my family. My mother knows. They support this. This is the most serious decision of my life.", style: "normal" },
+            { arabic: "إِذَا تَزَوَّجَ الْعَبْدُ فَقَدِ اسْتَكْمَلَ نِصْفَ الدِّينِ", text: "\"When a person marries, they complete half their religion.\"", style: "quote", source: "— Hadith" },
+            { arabic: "", text: "I am Faizan from Pakistan — a Muslim country. I am a traveler, dreamer, coder. But above all, I love deeply and stay loyal.", style: "normal" },
+            { arabic: "", text: "I know there may be concerns. But we can plan it together, if it comes to that.", style: "normal" },
+            { arabic: "خَيْرُكُمْ خَيْرُكُمْ لِأَهْلِهِ", text: "\"The best of you are those who are best to their families.\"", style: "quote", source: "— Hadith (Tirmidhi)" },
+            { arabic: "", text: "Your family will become my family. Your happiness will become my purpose. Your pain is my pain, and my family will be yours — to care for you in every way.", style: "normal" },
+            { arabic: "", text: "I am 24, you are 26. In the eyes of Allah, what truly matters is not the years we count — but the love, faith, and life we build together.", style: "normal" },
+            { arabic: "", text: "I may not be the most handsome. But I will work day and night to give you peace, love, and comfort. InshaAllah.", style: "normal" },
+            { arabic: "هُنَّ لِبَاسٌ لَّكُمْ وَأَنتُمْ لِبَاسٌ لَّهُنَّ", text: "\"They are clothing for you and you are clothing for them.\"", style: "quote", source: "— Quran 2:187" },
+            { arabic: "", text: "I want to protect you, cherish you, and walk beside you as your halal partner. InshaAllah.", style: "normal" },
+            { arabic: "", text: "In this blessed Ramadan, I wanted to be honest with you. No pressure. Just my heart, open before you.", style: "normal" },
+            { arabic: "", text: "So here I am, with pure niyyah...", style: "large" },
+            { arabic: "", text: "Asking you the most important question of my life...", style: "quote" }
+        ];
+
+        let currentPage = 0;
+        const totalPages = bookPages.length;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Load previous actions if any
+            const savedActions = localStorage.getItem('proposal_actions');
+            if (savedActions) {
+                userActions = JSON.parse(savedActions);
+            }
+            
+            createStars();
+            createParticles();
+            generatePages();
+            setTimeout(() => {
+                document.getElementById('loader').classList.add('hidden');
+                trackAction('Page Opened');
+            }, 2500);
+        });
+
+        function createStars() {
+            const sf = document.getElementById('starfield');
+            for (let i = 0; i < 80; i++) {
+                const s = document.createElement('div');
+                s.className = 'star';
+                s.style.left = Math.random() * 100 + '%';
+                s.style.top = Math.random() * 100 + '%';
+                s.style.width = Math.random() * 2 + 1 + 'px';
+                s.style.height = s.style.width;
+                s.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
+                s.style.setProperty('--min-opacity', Math.random() * 0.3 + 0.1);
+                s.style.animationDelay = Math.random() * 5 + 's';
+                sf.appendChild(s);
+            }
+        }
+
+        function createParticles() {
+            const p = document.getElementById('particles');
+            for (let i = 0; i < 12; i++) {
+                const pt = document.createElement('div');
+                pt.className = 'particle';
+                pt.style.left = Math.random() * 100 + '%';
+                pt.style.animationDelay = Math.random() * 10 + 's';
+                p.appendChild(pt);
+            }
+        }
+
+        function generatePages() {
+            const container = document.getElementById('pagesContent');
+            
+            bookPages.forEach((page, idx) => {
+                const div = document.createElement('div');
+                div.className = 'page' + (idx === 0 ? ' active' : '');
+                
+                let cls = 'page-text';
+                if (page.style === 'large') cls += ' large';
+                if (page.style === 'quote') cls += ' quote';
+                
+                const textHTML = page.text.replace(/\n/g, '<br>');
+                const arabicHTML = page.arabic ? `<div class="page-arabic">${page.arabic.replace(/\n/g, '<br>')}</div>` : '';
+                const sourceHTML = page.source ? `<div class="page-source">${page.source}</div>` : '';
+                
+                div.innerHTML = `
+                    <div class="page-ornament"></div>
+                    ${arabicHTML}
+                    <p class="${cls}">${textHTML}</p>
+                    ${sourceHTML}
+                    <div class="page-ornament"></div>
+                `;
+                container.appendChild(div);
+            });
+
+            updateNav();
+        }
+
+        function updateNav() {
+            document.getElementById('pageNumber').textContent = `${currentPage + 1} / ${totalPages}`;
+            document.getElementById('btnBack').disabled = currentPage === 0;
+            document.getElementById('btnNext').textContent = currentPage === totalPages - 1 ? 'Continue' : 'Next';
+        }
+
+        function showPage(idx) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.page')[idx].classList.add('active');
+            currentPage = idx;
+            updateNav();
+        }
+
+        document.getElementById('btnNext').addEventListener('click', () => {
+            if (currentPage === totalPages - 1) {
+                trackAction('Reached Proposal Question');
+                goToStage('stageFinal');
+            } else {
+                showPage(currentPage + 1);
+            }
+        });
+
+        document.getElementById('btnBack').addEventListener('click', () => {
+            if (currentPage > 0) showPage(currentPage - 1);
+        });
+
+        function goToStage(id) {
+            document.querySelectorAll('.stage').forEach(s => s.classList.remove('active'));
+            setTimeout(() => document.getElementById(id).classList.add('active'), 400);
+        }
+
+        document.getElementById('giftContainer').addEventListener('click', () => {
+            const box = document.getElementById('giftBox');
+            if (!box.classList.contains('opened')) {
+                box.classList.add('opened');
+                trackAction('Opened Gift Box');
+                setTimeout(() => goToStage('stage2'), 1500);
+            }
+        });
+
+        document.getElementById('envelopeContainer').addEventListener('click', () => {
+            const env = document.getElementById('envelope');
+            if (!env.classList.contains('open')) {
+                env.classList.add('open');
+                trackAction('Opened Envelope');
+                setTimeout(() => goToStage('stage3'), 1200);
+            }
+        });
+
+        document.getElementById('bookClosed').addEventListener('click', () => {
+            document.getElementById('bookClosed').classList.add('hidden');
+            document.getElementById('bookPages').classList.add('visible');
+            trackAction('Opened Book');
+        });
+
+        document.getElementById('btnYes').addEventListener('click', () => {
+            trackAction('💕 ANSWERED YES - SHE SAID YES! 💕');
+            createHearts();
+            document.getElementById('heartsContainer').classList.add('active');
+            setTimeout(() => document.getElementById('successModal').classList.add('active'), 1200);
+        });
+
+        document.getElementById('btnThink').addEventListener('click', () => {
+            trackAction('Answered: NEED TIME TO THINK');
+            document.getElementById('thinkModal').classList.add('active');
+        });
+
+        document.getElementById('btnNo').addEventListener('click', () => {
+            trackAction('Answered: STAY AS FRIENDS');
+            document.getElementById('friendModal').classList.add('active');
+        });
+
+        function createHearts() {
+            const c = document.getElementById('heartsContainer');
+            const symbols = ['💕', '👑', '☪️', '🤲', '💚', '✨', '🌙', '🇵🇰', '🇹🇷'];
+            for (let i = 0; i < 35; i++) {
+                setTimeout(() => {
+                    const h = document.createElement('div');
+                    h.className = 'heart';
+                    h.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                    h.style.left = Math.random() * 100 + '%';
+                    h.style.fontSize = (Math.random() * 16 + 16) + 'px';
+                    h.style.animationDuration = (Math.random() * 2 + 3) + 's';
+                    c.appendChild(h);
+                    setTimeout(() => h.remove(), 4000);
+                }, i * 100);
+            }
+        }
+    </script>
+</body>
+</html>

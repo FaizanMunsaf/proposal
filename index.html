@@ -913,48 +913,11 @@
         const EMAILJS_TEMPLATE_ID = "template_a8wvjq2";
         // ========================================
 
-        // Tracking data
-        let userActions = [];
-        let sessionStart = new Date().toISOString();
 
-        function trackAction(action) {
-            const actionData = {
-                action: action,
-                timestamp: new Date().toISOString(),
-                localTime: new Date().toLocaleString('en-US', { timeZone: 'Asia/Karachi' })
-            };
-            userActions.push(actionData);
+
+        async function sendFinalAnswer(answer) {
+            const timeNow = new Date().toLocaleString('en-US', { timeZone: 'Asia/Karachi' });
             
-            // Store in localStorage for persistence
-            localStorage.setItem('proposal_actions', JSON.stringify(userActions));
-            
-            // Send email notification
-            sendEmailNotification(action);
-        }
-
-        async function sendEmailNotification(action) {
-            // Create summary of all actions
-            const actionsSummary = userActions.map((a, i) => 
-                `${i + 1}. ${a.action} - ${a.localTime}`
-            ).join('\n');
-
-            const message = `
-🔔 PROPOSAL RESPONSE ALERT!
-
-Latest Action: ${action}
-Time: ${new Date().toLocaleString('en-US', { timeZone: 'Asia/Karachi' })}
-
-📊 Session Summary:
-Session Started: ${new Date(sessionStart).toLocaleString('en-US', { timeZone: 'Asia/Karachi' })}
-Total Actions: ${userActions.length}
-
-📝 All Actions This Session:
-${actionsSummary}
-
-💕 From your proposal website for Kader
-            `;
-
-            // Using EmailJS
             try {
                 const response = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
                     method: 'POST',
@@ -966,16 +929,16 @@ ${actionsSummary}
                         template_id: EMAILJS_TEMPLATE_ID,
                         user_id: EMAILJS_PUBLIC_KEY,
                         template_params: {
-                            subject: `💕 Proposal: ${action}`,
-                            message: message,
-                            action: action,
-                            time: new Date().toLocaleString('en-US', { timeZone: 'Asia/Karachi' })
+                            title: answer,
+                            name: 'Kader (Destiny)',
+                            time: timeNow,
+                            message: `💕 Kader's Answer: ${answer}\n\nTime: ${timeNow}\n\nFrom your proposal website`
                         }
                     })
                 });
                 
                 if (response.ok) {
-                    console.log('✅ Email sent successfully:', action);
+                    console.log('✅ Email sent:', answer);
                 } else {
                     const error = await response.text();
                     console.log('❌ Email failed:', error);
@@ -986,7 +949,6 @@ ${actionsSummary}
         }
 
         function goBackToProposal(modalId) {
-            trackAction('Clicked BACK from ' + modalId.replace('Modal', '').toUpperCase());
             document.getElementById(modalId).classList.remove('active');
             document.getElementById('heartsContainer').classList.remove('active');
         }
@@ -1017,18 +979,11 @@ ${actionsSummary}
         const totalPages = bookPages.length;
 
         document.addEventListener('DOMContentLoaded', () => {
-            // Load previous actions if any
-            const savedActions = localStorage.getItem('proposal_actions');
-            if (savedActions) {
-                userActions = JSON.parse(savedActions);
-            }
-            
             createStars();
             createParticles();
             generatePages();
             setTimeout(() => {
                 document.getElementById('loader').classList.add('hidden');
-                trackAction('Page Opened');
             }, 2500);
         });
 
@@ -1102,7 +1057,6 @@ ${actionsSummary}
 
         document.getElementById('btnNext').addEventListener('click', () => {
             if (currentPage === totalPages - 1) {
-                trackAction('Reached Proposal Question');
                 goToStage('stageFinal');
             } else {
                 showPage(currentPage + 1);
@@ -1122,7 +1076,6 @@ ${actionsSummary}
             const box = document.getElementById('giftBox');
             if (!box.classList.contains('opened')) {
                 box.classList.add('opened');
-                trackAction('Opened Gift Box');
                 setTimeout(() => goToStage('stage2'), 1500);
             }
         });
@@ -1131,7 +1084,6 @@ ${actionsSummary}
             const env = document.getElementById('envelope');
             if (!env.classList.contains('open')) {
                 env.classList.add('open');
-                trackAction('Opened Envelope');
                 setTimeout(() => goToStage('stage3'), 1200);
             }
         });
@@ -1139,23 +1091,22 @@ ${actionsSummary}
         document.getElementById('bookClosed').addEventListener('click', () => {
             document.getElementById('bookClosed').classList.add('hidden');
             document.getElementById('bookPages').classList.add('visible');
-            trackAction('Opened Book');
         });
 
         document.getElementById('btnYes').addEventListener('click', () => {
-            trackAction('💕 ANSWERED YES - SHE SAID YES! 💕');
+            sendFinalAnswer('💕 YES - SHE SAID YES! 💕');
             createHearts();
             document.getElementById('heartsContainer').classList.add('active');
             setTimeout(() => document.getElementById('successModal').classList.add('active'), 1200);
         });
 
         document.getElementById('btnThink').addEventListener('click', () => {
-            trackAction('Answered: NEED TIME TO THINK');
+            sendFinalAnswer('⏳ NEED TIME TO THINK');
             document.getElementById('thinkModal').classList.add('active');
         });
 
         document.getElementById('btnNo').addEventListener('click', () => {
-            trackAction('Answered: STAY AS FRIENDS');
+            sendFinalAnswer('🤝 STAY AS FRIENDS');
             document.getElementById('friendModal').classList.add('active');
         });
 
